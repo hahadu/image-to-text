@@ -28,7 +28,7 @@ class ImageToText{
      * @return string
      */
     public function to_text($file_name , $flage=true){
-        $image_data = $this->resize_img($file_name,$flage);
+        $image_data = $this->get_img_data($file_name,$flage);
         $width =imagesx($image_data); //获取图像宽度
         $height=imagesy($image_data); //获取图像高度
 
@@ -38,6 +38,22 @@ class ImageToText{
                 $color_index = imagecolorat($image_data, $j-1, $i-1);     //获取单个像素偏移量色值
                 $color_tran = imagecolorsforindex($image_data, $color_index);  //获取像素颜色
                 $result.=$this->color_img($color_tran);
+            }
+            $result.="<br/>";
+        }
+        return $result;
+    }
+    public function to_text_black($file_name , $flage=true){
+        $image_data = $this->get_img_data($file_name,$flage);
+        $width =imagesx($image_data); //获取图像宽度
+        $height=imagesy($image_data); //获取图像高度
+
+        $result="";
+        for($i=1;$i<=$height;$i++){
+            for($j=1;$j<=$width;$j++){
+                $color_index = imagecolorat($image_data, $j-1, $i-1);     //获取单个像素偏移量色值
+                $color_tran = imagecolorsforindex($image_data, $color_index);  //获取像素颜色
+                $result.=$this->getimgchars($color_tran);
             }
             $result.="<br/>";
         }
@@ -75,7 +91,7 @@ class ImageToText{
           return '<span style="color:'.$color.'" >'.$char."</span>";;
 
     }
-    public function resize_img($file_name,$flage=true){
+    private function get_img_data($file_name,$flage=true){
           //header('Content-Type: image/jpeg');
           list($width, $height,$type) = getimagesize($file_name); //获取图片的长宽
           $fun='imagecreatefrom' . image_type_to_extension($type, false); //获取图片后缀
