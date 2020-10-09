@@ -43,7 +43,7 @@ class ImageToText{
         }
         return $result;
     }
-    function getimgchars($color_tran){
+    private function getimgchars($color_tran){
           $length = strlen($this->chars);
           $alpha=$color_tran['alpha'];
           $r=$color_tran['red'];
@@ -61,7 +61,7 @@ class ImageToText{
           }
          return " ";
     }
-    function color_img($color_tran){
+    private function color_img($color_tran){
           $length = strlen($this->chars);
           $alpha=$color_tran['alpha'];
 
@@ -75,7 +75,7 @@ class ImageToText{
           return '<span style="color:'.$color.'" >'.$char."</span>";;
 
     }
-    function resize_img($file_name,$flage=true){
+    public function resize_img($file_name,$flage=true){
           //header('Content-Type: image/jpeg');
           list($width, $height,$type) = getimagesize($file_name); //获取图片的长宽
           $fun='imagecreatefrom' . image_type_to_extension($type, false); //获取图片后缀
